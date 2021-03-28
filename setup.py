@@ -24,6 +24,7 @@ setup(
     description='Reimplementation of the subprocess module',
     license="GPL-3",
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Riccardo Isola',
     author_email='riky.isola@gmail.com',
     url="https://github.com/RikyIsola/python-linux-commands",
