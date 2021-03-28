@@ -20,7 +20,7 @@ with open("README.md", 'r') as f:
 
 setup(
     name='linux-commands',
-    version='0.1',
+    version='0.2',
     description='Reimplementation of the subprocess module',
     license="GPL-3",
     long_description=long_description,
