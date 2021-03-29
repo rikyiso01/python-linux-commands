@@ -1,8 +1,8 @@
 from setuptools import setup,find_packages
-from distutils_commands import command,publish_github,publish_pypi,clean,pytest,wheel,source
+from distutils_commands import command,publish_github,publish_pypi,clean,pytest,wheel,source,get_cmdclass
 from os.path import join
 
-@command
+@command('publish')
 def publish():
     test()
     source()
@@ -11,7 +11,7 @@ def publish():
     publish_pypi()
     clean()
 
-@command
+@command('test')
 def test():
     pytest(join('tests','tests.py'))
 
@@ -29,7 +29,7 @@ setup(
     author_email='riky.isola@gmail.com',
     url="https://github.com/RikyIsola/python-linux-commands",
     packages=find_packages(),
-    cmdclass={'publish':publish,'test':test,'clean':clean},
+    cmdclass=get_cmdclass(),
     classifiers=['Development Status :: 4 - Beta',
                  'Intended Audience :: Developers',
                  'Topic :: Software Development :: Libraries',
