@@ -37,5 +37,8 @@ setup(
                  'Programming Language :: Python :: 3.9'],
     keywords='shell sh subprocess',
     python_requires='>=3.9',
-    project_urls={'Tracker':'https://github.com/RikyIsola/python-linux-commands/issues'}
+    project_urls={'Tracker':'https://github.com/RikyIsola/python-linux-commands/issues'},
+    setup_requires=['distutils-commands[wheel]','distutils-commands[github]','distutils-commands[pytest]',
+                    'distutils-commands[pypi]'],
+    test_require='pytest'
 )
