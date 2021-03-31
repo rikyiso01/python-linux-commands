@@ -1,11 +1,11 @@
 from subprocess import run,PIPE
-from typing import Iterable,Any,Union,TypeVar,Sequence
+from typing import Iterable,Any,Union,TypeVar,Sequence,List,Tuple
 from os import kill,getpid,environ
 from sys import stderr
 
 RESULT_TYPE=Union[int,str]
 
-def convert_key(result:list[str],key:str,value:Any):
+def convert_key(result:List[str],key:str,value:Any):
     argument=f'-{key}' if len(key)==1 else f'--{key}'
     if isinstance(value,bool):
         if value:
@@ -22,7 +22,7 @@ def convert_value(value:str)->RESULT_TYPE:
 
 
 T=TypeVar('T')
-def convert_list(value:Sequence[T])->Union[T,tuple[T,...],None]:
+def convert_list(value:Sequence[T])->Union[T,Tuple[T,...],None]:
     if len(value)==0:
         return None
     elif len(value)==1:
@@ -48,10 +48,10 @@ def get_error(code:int,error:str)->Exception:
 
 class Command:
     def __init__(self,commands:Iterable[str]):
-        self.__commands:tuple[str]=tuple(commands)
+        self.__commands:Tuple[str]=tuple(commands)
 
-    def __call__(self, *args:Any, stdin:str='',env=environ,**kwargs:Any)->Union[RESULT_TYPE,tuple[RESULT_TYPE],
-                                                                                tuple[tuple[RESULT_TYPE]],None]:
+    def __call__(self, *args:Any, stdin:str='',env=environ,**kwargs:Any)->Union[RESULT_TYPE,Tuple[RESULT_TYPE],
+                                                                                Tuple[Tuple[RESULT_TYPE]],None]:
         command=list(self.__commands)
         for key in kwargs.keys():
             convert_key(command,key,kwargs[key])
@@ -64,12 +64,12 @@ class Command:
             raise get_error(code,process.stderr)
         if process.stderr!='':
             print(process.stderr,file=stderr)
-        result:list[RESULT_TYPE,tuple[RESULT_TYPE,...]]=[]
+        result:List[RESULT_TYPE,Tuple[RESULT_TYPE,...]]=[]
         for line in process.stdout.splitlines():
-            line_values:list[RESULT_TYPE]=[]
+            line_values:List[RESULT_TYPE]=[]
             for value in line.split():
                 line_values.append(convert_value(value))
-            line_values:Union[RESULT_TYPE,tuple[RESULT_TYPE,...],None]=convert_list(line_values)
+            line_values:Union[RESULT_TYPE,Tuple[RESULT_TYPE,...],None]=convert_list(line_values)
             if line_values is not None:
                 result.append(line_values)
         return convert_list(result)

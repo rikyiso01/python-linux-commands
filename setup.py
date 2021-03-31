@@ -3,11 +3,11 @@ from distutils_commands import command,publish_github,publish_pypi,clean,pytest,
 from os.path import join
 
 @command('publish')
-def publish():
+def publish(changelog:str):
     test()
     source()
     wheel()
-    publish_github()
+    publish_github(changelog)
     publish_pypi()
     clean()
 
@@ -20,7 +20,7 @@ with open("README.md", 'r') as f:
 
 setup(
     name='linux-commands',
-    version='0.2',
+    version='0.3',
     description='Reimplementation of the subprocess module',
     license="GPL-3",
     long_description=long_description,
@@ -34,11 +34,12 @@ setup(
                  'Intended Audience :: Developers',
                  'Topic :: Software Development :: Libraries',
                  'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+                 'Programming Language :: Python :: 3.7',
+                 'Programming Language :: Python :: 3.8',
                  'Programming Language :: Python :: 3.9'],
     keywords='shell sh subprocess',
-    python_requires='>=3.9',
+    python_requires='>=3.7',
     project_urls={'Tracker':'https://github.com/RikyIsola/python-linux-commands/issues'},
-    setup_requires=['distutils-commands[wheel]','distutils-commands[github]','distutils-commands[pytest]',
-                    'distutils-commands[pypi]'],
-    test_require='pytest'
+    setup_requires=['distutils-commands[wheel]>=1.5.1','distutils-commands[pytest]>=1.5.1',
+                    'distutils-commands[pypi]>=1.5.1','pytest'],
 )
